@@ -9,6 +9,17 @@ version = "0.1.0"
 cuda = "12.0"
 
 [tasks]
+get-vpr-methods-evaluation.cmd = 'git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git'
+#get-vpr-methods-evaluation.cmd = 'git clone --recursive git@github.com:alejandrofontan/VPR-methods-evaluation.git'
+
+vpr-lab.cmd = "python vpr-lab.py --method={{ method }} --database_folder={{ database_folder }} --queries_folder={{ queries_folder }} --log_dir={{ log_dir }} --no_labels"
+vpr-lab.cwd = "VPR-methods-evaluation"
+vpr-lab.args = [
+  { "arg" = "method", "default" = "megaloc" },
+  { "arg" = "database_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb" },
+  { "arg" = "queries_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb" },
+  { "arg" = "log_dir", "default" = "/home/alejandro/vpr-test/ASPA135/results" },
+]
 
 [dependencies]
 pyqt = "*"
