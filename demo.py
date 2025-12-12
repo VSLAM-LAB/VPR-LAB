@@ -6,10 +6,10 @@ from utilities import load_image_list_with_absolute_paths
 from utilities import load_trajectory
 from utilities import load_yaml
 
-from plot_functions.plot_functions import plot_clickable_GT
 from evaluation_functions import precision_recall_curve, recall_at_k
 from plot_functions.plot_functions import plot_precision_recall_curve, plot_recall_at_k
 from plot_functions.clickable_plot_functions import plot_precision_recall_curve_clickable
+from plot_functions.clickable_plots import plot_clickable_matrix  
 
 parser = argparse.ArgumentParser(description="Generate mask matrix from experiment config.")
 parser.add_argument("--exp_yaml", type=str, default="exp.yaml", help="Path to experiment YAML config file")
@@ -72,5 +72,5 @@ num_th = 100
 
 precisions, recalls, thresholds, stats_at_rand = precision_recall_curve(GT = GT, M = M, r_gt = r_gt, D = D, matching=matching, num_th=num_th)
 
-plot_clickable_GT(GT = GT, db_df = db_df, query_df = query_df, gt_db = gt_db, gt_query = gt_query)
-# plot_clickable_GT(GT = D, db_df = db_df, query_df = query_df, gt_db = gt_db, gt_query = gt_query)
+# plot_clickable_matrix(matrix = D, db_df = db_df, query_df = query_df, gt_db = gt_db, gt_query = gt_query)
+plot_clickable_matrix(matrix = D, db_df = db_df, query_df = query_df, lightglue_matching_func=True)
