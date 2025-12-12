@@ -44,6 +44,20 @@ create-mask-matrix.args = [
   { "arg" = "mask_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/M.npy" },  
 ]
 
+demo.cmd = "python demo.py --gt_file_db={{ gt_file_db }} --gt_file_q={{ gt_file_q }} --rgb_list_db={{ rgb_list_db }} --rgb_list_q={{ rgb_list_q }} --rgb_folder_db={{ rgb_folder_db }} --rgb_folder_q={{ rgb_folder_q }} --gt_matrix={{ gt_matrix }} --mask_matrix={{ mask_matrix }} --d_matrix={{ d_matrix }}"
+demo.args = [
+  { "arg" = "gt_file_db", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
+  { "arg" = "gt_file_q", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
+  { "arg" = "rgb_list_db", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
+  { "arg" = "rgb_list_q", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
+  { "arg" = "rgb_folder_db", "default" = "/home/alejandro/vpr-test/ASPA135" },
+  { "arg" = "rgb_folder_q", "default" = "/home/alejandro/vpr-test/ASPA135" },  
+  { "arg" = "gt_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/GT.npy" },  
+  { "arg" = "mask_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/M.npy" },  
+  { "arg" = "d_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/D_0_megaloc.npy" },  
+]
+
+
 [dependencies]
 pyqt = "*"
 

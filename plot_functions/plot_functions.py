@@ -21,8 +21,32 @@ matplotlib.use("QtAgg")
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 
+plot_settings_default = {}
+factor = 2
+plot_settings_default = {
+    'legend_on': True,
+    'title_on': True,
+    'xlabel_on': True,
+    'ylabel_on': True,
+    'top': True,
+    'right': True,
+    'grid_on': True,
+    'grid_alpha': 0.4,
+    'grid_style': '--',
+    'line_width': 2.0 * factor,   
+    'marker_size': 4 * factor,
+    'settings': {
+        'font.size': 18 * factor,
+        'axes.titlesize': 18 * factor,
+        'axes.labelsize': 18 * factor,
+        'xtick.labelsize': 16 * factor,
+        'ytick.labelsize': 16 * factor,
+        'legend.fontsize': 16 * factor,
+    }
+}
+
 def plot_precision_recall_curve(precisions, recalls, thresholds, stats_at_rand, 
-                                fig=None, ax=None, marker='o', color='b', line_style='-', label=None, paper_settings=None):
+                                fig=None, ax=None, marker='o', color='b', line_style='-', label=None, plot_settings=plot_settings_default):
     
     precisions = np.asarray(precisions, dtype=float)
     recalls = np.asarray(recalls, dtype=float)
@@ -44,22 +68,23 @@ def plot_precision_recall_curve(precisions, recalls, thresholds, stats_at_rand,
 
     # Plot PR curve
     ax.plot(recalls, precisions, marker=marker, color=color, label = label, 
-            lw=paper_settings['line_width'],
-            markersize=paper_settings['marker_size'],
+            lw=plot_settings['line_width'],
+            markersize=plot_settings['marker_size'],
             linestyle=line_style)
-    if paper_settings['xlabel_on']: ax.set_xlabel('Recall')
-    if paper_settings['ylabel_on']: ax.set_ylabel('Precision')
-    if paper_settings['title_on']: ax.set_title(f"Precision–Recall (matching = matching)")
+    
+    if plot_settings['xlabel_on']: ax.set_xlabel('Recall')
+    if plot_settings['ylabel_on']: ax.set_ylabel('Precision')
+    if plot_settings['title_on']: ax.set_title(f"Precision–Recall (matching = matching)")
 
-    ax.legend().set_visible(paper_settings['legend_on'])
-    ax.spines['top'].set_visible(paper_settings['top'])
-    ax.spines['right'].set_visible(paper_settings['right'])
+    ax.legend().set_visible(plot_settings['legend_on'])
+    ax.spines['top'].set_visible(plot_settings['top'])
+    ax.spines['right'].set_visible(plot_settings['right'])
 
-    # ax.tick_params(axis='both', which='major', labelsize=8*factor)
+    ax.tick_params(axis='both', which='major', labelsize=8*factor)
     ax.grid(
-        paper_settings['grid_on'], 
-        alpha=paper_settings['grid_alpha'], 
-        linestyle=paper_settings['grid_style']
+        plot_settings['grid_on'], 
+        alpha=plot_settings['grid_alpha'], 
+        linestyle=plot_settings['grid_style']
     ) 
     ax.set_xlim(0.0, 1.0)
     ax.set_ylim(0.0, 1.05)
@@ -78,14 +103,14 @@ def plot_precision_recall_curve(precisions, recalls, thresholds, stats_at_rand,
         # if vmax is not None:
         #     ax.axhline(y=float(vmax), linestyle='-.', linewidth=1.5, label=f'Max@Rand = {vmax:.2f}', color=color)
     
-    if paper_settings['legend_on']:
+    if plot_settings['legend_on']:
         ax.legend(loc='upper right')
 
-    plt.rcParams.update(paper_settings['settings'])
+    plt.rcParams.update(plot_settings['settings'])
     return fig, ax
 
 def plot_recall_at_k(k_values, recalls, avg_probs,
-                     fig=None, ax=None, marker='o', color='b', line_style='-', label=None, paper_settings=None):
+                     fig=None, ax=None, marker='o', color='b', line_style='-', label=None, plot_settings_default=plot_settings_default):
  
     k_values = np.asarray(k_values, dtype=int)
     recalls = np.asarray(recalls, dtype=float)
@@ -103,28 +128,28 @@ def plot_recall_at_k(k_values, recalls, avg_probs,
 
     # Plot empirical recall curve
     ax.plot(k_values, recalls, marker=marker, color=color, label=label,
-            lw=paper_settings['line_width'],
-            markersize=paper_settings['marker_size'],
+            lw=plot_settings_default['line_width'],
+            markersize=plot_settings_default['marker_size'],
             linestyle=line_style)
 
     # Plot random baseline in red
     ax.plot(k_values, avg_probs, marker=None, color='red', label="Random baseline",
-            lw=paper_settings['line_width'] * 0.5,
+            lw=plot_settings_default['line_width'] * 0.5,
             #markersize=paper_settings['marker_size'],
             linestyle='--')
     
-    if paper_settings['xlabel_on']: ax.set_xlabel('k')
-    if paper_settings['ylabel_on']: ax.set_ylabel('Recall@k')
-    if paper_settings['title_on']: ax.set_title("Recall@k Curve")
+    if plot_settings_default['xlabel_on']: ax.set_xlabel('k')
+    if plot_settings_default['ylabel_on']: ax.set_ylabel('Recall@k')
+    if plot_settings_default['title_on']: ax.set_title("Recall@k Curve")
 
-    ax.legend().set_visible(paper_settings['legend_on'])
-    ax.spines['top'].set_visible(paper_settings['top'])
-    ax.spines['right'].set_visible(paper_settings['right'])
+    ax.legend().set_visible(plot_settings_default['legend_on'])
+    ax.spines['top'].set_visible(plot_settings_default['top'])
+    ax.spines['right'].set_visible(plot_settings_default['right'])
 
     ax.grid(
-        paper_settings['grid_on'],
-        alpha=paper_settings['grid_alpha'],
-        linestyle=paper_settings['grid_style']
+        plot_settings_default['grid_on'],
+        alpha=plot_settings_default['grid_alpha'],
+        linestyle=plot_settings_default['grid_style']
     )
 
     # Scale axes
@@ -134,10 +159,10 @@ def plot_recall_at_k(k_values, recalls, avg_probs,
     # Format y-axis to hide 0 tick label
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda val, pos: '' if val == 0 else f'{val:g}'))
 
-    if paper_settings['legend_on']:
+    if plot_settings_default['legend_on']:
         ax.legend(loc='lower right')
 
-    plt.rcParams.update(paper_settings['settings'])
+    plt.rcParams.update(plot_settings_default['settings'])
     ax.set_xticks(k_values)
     ax.set_xticklabels([str(k) for k in k_values])
     
