@@ -21,6 +21,29 @@ vpr-lab.args = [
   { "arg" = "log_dir", "default" = "/home/alejandro/vpr-test/ASPA135/results" },
 ]
 
+create-gt-matrix.cmd = "python create-gt-matrix.py --gt_file_db={{ gt_file_db }} --gt_file_q={{ gt_file_q }} --rgb_list_db={{ rgb_list_db }} --rgb_list_q={{ rgb_list_q }} --rgb_folder_db={{ rgb_folder_db }} --rgb_folder_q={{ rgb_folder_q }} --gt_matrix={{ gt_matrix }}"
+create-gt-matrix.args = [
+  { "arg" = "gt_file_db", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
+  { "arg" = "gt_file_q", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
+  { "arg" = "rgb_list_db", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
+  { "arg" = "rgb_list_q", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
+  { "arg" = "rgb_folder_db", "default" = "/home/alejandro/vpr-test/ASPA135" },
+  { "arg" = "rgb_folder_q", "default" = "/home/alejandro/vpr-test/ASPA135" },  
+  { "arg" = "gt_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/GT.npy" },  
+]
+
+create-mask-matrix.cmd = "python create-mask-matrix.py --gt_file_db={{ gt_file_db }} --gt_file_q={{ gt_file_q }} --rgb_list_db={{ rgb_list_db }} --rgb_list_q={{ rgb_list_q }} --rgb_folder_db={{ rgb_folder_db }} --rgb_folder_q={{ rgb_folder_q }} --gt_matrix={{ gt_matrix }} --mask_matrix={{ mask_matrix }}"
+create-mask-matrix.args = [
+  { "arg" = "gt_file_db", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
+  { "arg" = "gt_file_q", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
+  { "arg" = "rgb_list_db", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
+  { "arg" = "rgb_list_q", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
+  { "arg" = "rgb_folder_db", "default" = "/home/alejandro/vpr-test/ASPA135" },
+  { "arg" = "rgb_folder_q", "default" = "/home/alejandro/vpr-test/ASPA135" },  
+  { "arg" = "gt_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/GT.npy" },  
+  { "arg" = "mask_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/M.npy" },  
+]
+
 [dependencies]
 pyqt = "*"
 

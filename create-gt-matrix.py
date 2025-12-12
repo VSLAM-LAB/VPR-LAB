@@ -192,56 +192,68 @@ def compare_GT(GT_1, GT_2, label1, label2):
 def main():
 
     parser = argparse.ArgumentParser(description="Generate ground truth matrix from experiment config.")
-    parser.add_argument("--exp_yaml", type=str, default="exp.yaml", help="Path to experiment YAML config file")
-    parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
+    parser.add_argument("--gt_file_db", type=str, required=True, help="Path to gt_file_db")
+    parser.add_argument("--gt_file_q", type=str, required=True, help="Path to gt_file_q")
+    parser.add_argument("--rgb_list_db", type=str, required=True, help="Path to rgb_list_db")
+    parser.add_argument("--rgb_list_q", type=str, required=True, help="Path to rgb_list_q")
+    parser.add_argument("--rgb_folder_db", type=str, required=True, help="Path to rgb_folder_db")
+    parser.add_argument("--rgb_folder_q", type=str, required=True, help="Path to rgb_folder_q")
+    parser.add_argument("--gt_matrix", type=str, required=True, help="Path to gt_matrix")
+
+    #parser.add_argument("--exp_yaml", type=str, default="exp.yaml", help="Path to experiment YAML config file")
+    #parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
     args = parser.parse_args()
 
     # Inputs
-    print(f"\n{SCRIPT_LABEL}: {args.exp_yaml}")
-    exp_yaml = load_yaml(args.exp_yaml)
+    #print(f"\n{SCRIPT_LABEL}: {args.exp_yaml}")
+    #exp_yaml = load_yaml(args.exp_yaml)
     
     # Experiment paths
-    path_to_gt_file_db = exp_yaml["path_to_gt_file_db"]
-    path_to_gt_file_query = exp_yaml["path_to_gt_file_query"]
+    path_to_gt_file_db = args.gt_file_db 
+    path_to_gt_file_q = args.gt_file_q 
+    path_to_rgb_list_db = args.rgb_list_db
+    path_to_rgb_list_q = args.rgb_list_q
+    path_to_rgb_folder_db = args.rgb_folder_db
+    path_to_rgb_folder_q = args.rgb_folder_q
+    print(f'path_to_gt_file_db : {path_to_gt_file_db}')
+    print(f'path_to_gt_file_q : {path_to_gt_file_q}')
+    print(f'path_to_rgb_list_db : {path_to_rgb_list_db}')
+    print(f'path_to_rgb_list_q : {path_to_rgb_list_q}')
+    print(f'path_to_rgb_folder_db : {path_to_rgb_folder_db}')
+    print(f'path_to_rgb_folder_q : {path_to_rgb_folder_q}')   
 
-    path_to_rgb_list_db = exp_yaml["path_to_rgb_list_db"]
-    path_to_rgb_list_query = exp_yaml["path_to_rgb_list_query"]
-
-    path_to_rgb_folder_db = exp_yaml["path_to_rgb_folder_db"]
-    path_to_rgb_folder_query = exp_yaml["path_to_rgb_folder_query"]
-
-    GT_path = exp_yaml["GT_path"]
+    GT_path = args.gt_matrix
     print(f'GT_path : {GT_path}')
 
-    # Load image lists
-    db_df, query_df = load_image_list_with_absolute_paths(path_to_rgb_list_db, path_to_rgb_list_query, path_to_rgb_folder_db, path_to_rgb_folder_query)
+    # # Load image lists
+    db_df, query_df = load_image_list_with_absolute_paths(path_to_rgb_list_db, path_to_rgb_list_q, path_to_rgb_folder_db, path_to_rgb_folder_q)
     gt_db = load_trajectory(path_to_gt_file_db)
-    gt_query = load_trajectory(path_to_gt_file_query)
+    gt_query = load_trajectory(path_to_gt_file_q)
 
     # Create GT
     GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = None, db_df = db_df, query_df = query_df)
     np.save(GT_path, GT)  
 
-    filter = {}
-    filter['min_num_inliers'] = 30
-    filter['ransac_thresh'] = 5
-    filter['r_gt'] = exp_yaml['r_gt']
+    # filter = {}
+    # filter['min_num_inliers'] = 30
+    # filter['ransac_thresh'] = 5
+    # filter['r_gt'] = exp_yaml['r_gt']
 
-    # filter['class'] = 'orb_knn'
-    # GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
-    # np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT)  
+    # # filter['class'] = 'orb_knn'
+    # # GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
+    # # np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT)  
 
-    # filter['class'] = 'sift_knn'
-    # GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
-    # np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT)  
+    # # filter['class'] = 'sift_knn'
+    # # GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
+    # # np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT)  
 
-    filter['class'] = 'superpoint_lightglue'
-    GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
-    np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT) 
-
-    # filter['class'] = 'sift_lightglue'
+    # filter['class'] = 'superpoint_lightglue'
     # GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
     # np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT) 
+
+    # # filter['class'] = 'sift_lightglue'
+    # # GT = create_GT(gt_db = gt_db, gt_query = gt_query, metric = 'L2', filter = filter, db_df = db_df, query_df = query_df)
+    # # np.save(str.replace(GT_path, 'GT', f"GT_{filter['class']}"), GT) 
 
 if __name__ == "__main__":
     main()
