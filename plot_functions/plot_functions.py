@@ -110,7 +110,7 @@ def plot_precision_recall_curve(precisions, recalls, thresholds, stats_at_rand,
     return fig, ax
 
 def plot_recall_at_k(k_values, recalls, avg_probs,
-                     fig=None, ax=None, marker='o', color='b', line_style='-', label=None, plot_settings_default=plot_settings_default):
+                     fig=None, ax=None, marker='o', color='b', line_style='-', label=None, plot_settings=plot_settings_default):
  
     k_values = np.asarray(k_values, dtype=int)
     recalls = np.asarray(recalls, dtype=float)
@@ -128,28 +128,28 @@ def plot_recall_at_k(k_values, recalls, avg_probs,
 
     # Plot empirical recall curve
     ax.plot(k_values, recalls, marker=marker, color=color, label=label,
-            lw=plot_settings_default['line_width'],
-            markersize=plot_settings_default['marker_size'],
+            lw=plot_settings['line_width'],
+            markersize=plot_settings['marker_size'],
             linestyle=line_style)
 
     # Plot random baseline in red
     ax.plot(k_values, avg_probs, marker=None, color='red', label="Random baseline",
-            lw=plot_settings_default['line_width'] * 0.5,
+            lw=plot_settings['line_width'] * 0.5,
             #markersize=paper_settings['marker_size'],
             linestyle='--')
     
-    if plot_settings_default['xlabel_on']: ax.set_xlabel('k')
-    if plot_settings_default['ylabel_on']: ax.set_ylabel('Recall@k')
-    if plot_settings_default['title_on']: ax.set_title("Recall@k Curve")
+    if plot_settings['xlabel_on']: ax.set_xlabel('k')
+    if plot_settings['ylabel_on']: ax.set_ylabel('Recall@k')
+    if plot_settings['title_on']: ax.set_title("Recall@k Curve")
 
-    ax.legend().set_visible(plot_settings_default['legend_on'])
-    ax.spines['top'].set_visible(plot_settings_default['top'])
-    ax.spines['right'].set_visible(plot_settings_default['right'])
+    ax.legend().set_visible(plot_settings['legend_on'])
+    ax.spines['top'].set_visible(plot_settings['top'])
+    ax.spines['right'].set_visible(plot_settings['right'])
 
     ax.grid(
-        plot_settings_default['grid_on'],
-        alpha=plot_settings_default['grid_alpha'],
-        linestyle=plot_settings_default['grid_style']
+        plot_settings['grid_on'],
+        alpha=plot_settings['grid_alpha'],
+        linestyle=plot_settings['grid_style']
     )
 
     # Scale axes
@@ -159,10 +159,10 @@ def plot_recall_at_k(k_values, recalls, avg_probs,
     # Format y-axis to hide 0 tick label
     ax.yaxis.set_major_formatter(plt.FuncFormatter(lambda val, pos: '' if val == 0 else f'{val:g}'))
 
-    if plot_settings_default['legend_on']:
+    if plot_settings['legend_on']:
         ax.legend(loc='lower right')
 
-    plt.rcParams.update(plot_settings_default['settings'])
+    plt.rcParams.update(plot_settings['settings'])
     ax.set_xticks(k_values)
     ax.set_xticklabels([str(k) for k in k_values])
     
@@ -277,7 +277,7 @@ def plot_warped_image(kpts0, kpts1, path_to_image0, path_to_image1, fig, ax):
 
 def plot_clickable_GT(
     GT, db_df, query_df, gt_db, gt_query, q_path_col=1, db_path_col=1,
-    radius_px=5, pick='min', paper_settings = None
+    radius_px=5, pick='min', plot_settings = plot_settings_default
 ):
     import numpy as np
     import os
@@ -290,10 +290,10 @@ def plot_clickable_GT(
     fig_GT, ax_GT = plt.subplots(figsize=(8, 6))
     _move_figure(fig_GT, 200, 200)
     im = ax_GT.imshow(GT, cmap="viridis", aspect="auto")
-    #plt.colorbar(im, ax=ax_GT, label="Distance")
-    #ax_GT.set_xlabel("Query")
-    #ax_GT.set_ylabel("Database")
-    #ax_GT.set_title("GT")
+    plt.colorbar(im, ax=ax_GT, label="Distance")
+    ax_GT.set_xlabel("Query")
+    ax_GT.set_ylabel("Database")
+    ax_GT.set_title("GT")
     ax_GT.xaxis.set_ticks_position('top')
     ax_GT.xaxis.set_label_position('top')
     labels = [item.get_text() for item in ax_GT.get_xticklabels()]
@@ -433,33 +433,33 @@ def plot_clickable_GT(
         fig_traj, ax_traj = plot_trajectory(gt_db, fig_traj, ax_traj, label='gt_db', color='r', mode='2d')
         fig_traj, ax_traj = plot_trajectory(gt_query, fig_traj, ax_traj, label='gt_query', color='k', mode='2d')
 
-        #ax_traj.scatter(gt_db[row,0], gt_db[row,1], gt_db[row,2], c='blue', marker="d", label="db")
-        #ax_traj.scatter(gt_query[col,0], gt_query[col,1], gt_query[col,2], c='orange', marker="d", label="query")
-        #ax_traj.plot([gt_db[row,0], gt_query[col,0]], [gt_db[row,1], gt_query[col,1]],
-        #            linestyle="--", linewidth=2, color="g", label="match")
+        ax_traj.scatter(gt_db[row,0], gt_db[row,1], gt_db[row,2], c='blue', marker="d", label="db")
+        ax_traj.scatter(gt_query[col,0], gt_query[col,1], gt_query[col,2], c='orange', marker="d", label="query")
+        ax_traj.plot([gt_db[row,0], gt_query[col,0]], [gt_db[row,1], gt_query[col,1]],
+                   linestyle="--", linewidth=2, color="g", label="match")
 
         ax_traj.legend(loc="center left", bbox_to_anchor=(1.02, 0.5), borderaxespad=0)
         ax_traj.set_aspect('equal', adjustable="box")
-        #fig_traj.tight_layout()
+        fig_traj.tight_layout()
 
-        #ax_traj.legend().set_visible(paper_settings['legend_on'])
-        ax_traj.spines['top'].set_visible(paper_settings['top'])
-        ax_traj.spines['right'].set_visible(paper_settings['right'])
-        ax_traj.spines['bottom'].set_visible(paper_settings['top'])
-        ax_traj.spines['left'].set_visible(paper_settings['right'])
-        if not paper_settings['top']: ax_traj.set_xticklabels([])
-        if not paper_settings['top']: ax_traj.set_yticklabels([])
+        ax_traj.legend().set_visible(plot_settings['legend_on'])
+        ax_traj.spines['top'].set_visible(plot_settings['top'])
+        ax_traj.spines['right'].set_visible(plot_settings['right'])
+        ax_traj.spines['bottom'].set_visible(plot_settings['top'])
+        ax_traj.spines['left'].set_visible(plot_settings['right'])
+        if not plot_settings['top']: ax_traj.set_xticklabels([])
+        if not plot_settings['top']: ax_traj.set_yticklabels([])
         ax_traj.grid(
-            paper_settings['grid_on'],
-            alpha=paper_settings['grid_alpha'],
-            linestyle=paper_settings['grid_style']
+            plot_settings['grid_on'],
+            alpha=plot_settings['grid_alpha'],
+            linestyle=plot_settings['grid_style']
         )
-        if paper_settings['xlabel_on']: ax_traj.set_xlabel('X [m]')
+        if plot_settings['xlabel_on']: ax_traj.set_xlabel('X [m]')
         else: ax_traj.set_xlabel('')
-        if paper_settings['ylabel_on']: ax_traj.set_ylabel('Y [m]')
+        if plot_settings['ylabel_on']: ax_traj.set_ylabel('Y [m]')
         else: ax_traj.set_ylabel('')
-        if paper_settings['title_on']: ax_traj.set_title("Trajectories")
-        plt.rcParams.update(paper_settings['settings'])
+        if plot_settings['title_on']: ax_traj.set_title("Trajectories")
+        #plt.rcParams.update(plot_settings['settings'])
 
         plt.show(block=False)
 

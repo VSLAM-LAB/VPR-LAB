@@ -18,6 +18,30 @@ from evaluation_functions import get_GT_P, get_P, get_TP
 matplotlib.rcParams['pdf.fonttype'] = 42
 matplotlib.rcParams['ps.fonttype'] = 42
 
+plot_settings_default = {}
+factor = 2
+plot_settings_default = {
+    'legend_on': True,
+    'title_on': True,
+    'xlabel_on': True,
+    'ylabel_on': True,
+    'top': True,
+    'right': True,
+    'grid_on': True,
+    'grid_alpha': 0.4,
+    'grid_style': '--',
+    'line_width': 2.0 * factor,   
+    'marker_size': 4 * factor,
+    'settings': {
+        'font.size': 18 * factor,
+        'axes.titlesize': 18 * factor,
+        'axes.labelsize': 18 * factor,
+        'xtick.labelsize': 16 * factor,
+        'ytick.labelsize': 16 * factor,
+        'legend.fontsize': 16 * factor,
+    }
+}
+
 def overlay_distance_gt_mask(D, GT, M, k=5, r_gt=0.5):
     """
     Overlay between distance matrix D, ground truth GT (float), and mask M.
@@ -53,7 +77,7 @@ def overlay_distance_gt_mask(D, GT, M, k=5, r_gt=0.5):
 def plot_precision_recall_curve_clickable(
     precisions, recalls, thresholds, stats_at_rand,
     GT, M, r_gt, D=0, S=0, matching='multi-match',
-    fig=None, ax=None, marker='o', color='b', label=None, paper_settings = None
+    fig=None, ax=None, marker='o', color='b', label=None, plot_settings = plot_settings_default
 ):
     
     # LABELS FACTOR

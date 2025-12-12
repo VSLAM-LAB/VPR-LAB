@@ -9,9 +9,10 @@ version = "0.1.0"
 cuda = "12.0"
 
 [tasks]
-get-vpr-methods-evaluation.cmd = 'git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git'
-#get-vpr-methods-evaluation.cmd = 'git clone --recursive git@github.com:alejandrofontan/VPR-methods-evaluation.git'
-
+git-clone-vpr-methods-evaluation.cmd = 'git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git'
+git-clone-lightglue.cmd = 'git clone --recursive https://github.com/cvg/LightGlue.git'
+install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depends-on = ['git-clone-lightglue']}
+ 
 vpr-lab.cmd = "python vpr-lab.py --method={{ method }} --database_folder={{ database_folder }} --queries_folder={{ queries_folder }} --log_dir={{ log_dir }} --no_labels"
 vpr-lab.cwd = "VPR-methods-evaluation"
 vpr-lab.args = [
@@ -21,42 +22,20 @@ vpr-lab.args = [
   { "arg" = "log_dir", "default" = "/home/alejandro/vpr-test/ASPA135/results" },
 ]
 
-create-gt-matrix.cmd = "python create-gt-matrix.py --gt_file_db={{ gt_file_db }} --gt_file_q={{ gt_file_q }} --rgb_list_db={{ rgb_list_db }} --rgb_list_q={{ rgb_list_q }} --rgb_folder_db={{ rgb_folder_db }} --rgb_folder_q={{ rgb_folder_q }} --gt_matrix={{ gt_matrix }}"
+create-gt-matrix.cmd = "python create-gt-matrix.py --exp_yaml={{ exp_yaml }}"
 create-gt-matrix.args = [
-  { "arg" = "gt_file_db", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
-  { "arg" = "gt_file_q", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
-  { "arg" = "rgb_list_db", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
-  { "arg" = "rgb_list_q", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
-  { "arg" = "rgb_folder_db", "default" = "/home/alejandro/vpr-test/ASPA135" },
-  { "arg" = "rgb_folder_q", "default" = "/home/alejandro/vpr-test/ASPA135" },  
-  { "arg" = "gt_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/GT.npy" },  
+  { "arg" = "exp_yaml", "default" = "exp_test.yaml" } 
 ]
 
-create-mask-matrix.cmd = "python create-mask-matrix.py --gt_file_db={{ gt_file_db }} --gt_file_q={{ gt_file_q }} --rgb_list_db={{ rgb_list_db }} --rgb_list_q={{ rgb_list_q }} --rgb_folder_db={{ rgb_folder_db }} --rgb_folder_q={{ rgb_folder_q }} --gt_matrix={{ gt_matrix }} --mask_matrix={{ mask_matrix }}"
+create-mask-matrix.cmd = "python create-mask-matrix.py --exp_yaml={{ exp_yaml }}"
 create-mask-matrix.args = [
-  { "arg" = "gt_file_db", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
-  { "arg" = "gt_file_q", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
-  { "arg" = "rgb_list_db", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
-  { "arg" = "rgb_list_q", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
-  { "arg" = "rgb_folder_db", "default" = "/home/alejandro/vpr-test/ASPA135" },
-  { "arg" = "rgb_folder_q", "default" = "/home/alejandro/vpr-test/ASPA135" },  
-  { "arg" = "gt_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/GT.npy" },  
-  { "arg" = "mask_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/M.npy" },  
+  { "arg" = "exp_yaml", "default" = "exp_test.yaml" } 
 ]
 
-demo.cmd = "python demo.py --gt_file_db={{ gt_file_db }} --gt_file_q={{ gt_file_q }} --rgb_list_db={{ rgb_list_db }} --rgb_list_q={{ rgb_list_q }} --rgb_folder_db={{ rgb_folder_db }} --rgb_folder_q={{ rgb_folder_q }} --gt_matrix={{ gt_matrix }} --mask_matrix={{ mask_matrix }} --d_matrix={{ d_matrix }}"
+demo.cmd = "python demo.py --exp_yaml={{ exp_yaml }}"
 demo.args = [
-  { "arg" = "gt_file_db", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
-  { "arg" = "gt_file_q", "default" = "/home/alejandro/vpr-test/ASPA135/groundtruth.txt" },
-  { "arg" = "rgb_list_db", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
-  { "arg" = "rgb_list_q", "default" = "/home/alejandro/vpr-test/ASPA135/rgb.txt" },
-  { "arg" = "rgb_folder_db", "default" = "/home/alejandro/vpr-test/ASPA135" },
-  { "arg" = "rgb_folder_q", "default" = "/home/alejandro/vpr-test/ASPA135" },  
-  { "arg" = "gt_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/GT.npy" },  
-  { "arg" = "mask_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/M.npy" },  
-  { "arg" = "d_matrix", "default" = "/home/alejandro/vpr-test/ASPA135/results/D_0_megaloc.npy" },  
+  { "arg" = "exp_yaml", "default" = "exp_test.yaml" } 
 ]
-
 
 [dependencies]
 pyqt = "*"

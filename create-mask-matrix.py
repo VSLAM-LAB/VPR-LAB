@@ -26,55 +26,24 @@ def zero_diagonal_band(M, thickness=1):
 def main():
 
     parser = argparse.ArgumentParser(description="Generate mask matrix from experiment config.")
-    # parser.add_argument("--exp_yaml", type=str, default="exp.yaml", help="Path to experiment YAML config file")
-    # parser.add_argument("--verbose", action="store_true", help="Enable verbose output")
-    parser.add_argument("--gt_file_db", type=str, required=True, help="Path to gt_file_db")
-    parser.add_argument("--gt_file_q", type=str, required=True, help="Path to gt_file_q")
-    parser.add_argument("--rgb_list_db", type=str, required=True, help="Path to rgb_list_db")
-    parser.add_argument("--rgb_list_q", type=str, required=True, help="Path to rgb_list_q")
-    parser.add_argument("--rgb_folder_db", type=str, required=True, help="Path to rgb_folder_db")
-    parser.add_argument("--rgb_folder_q", type=str, required=True, help="Path to rgb_folder_q")
-    parser.add_argument("--gt_matrix", type=str, required=True, help="Path to gt_matrix")
-    parser.add_argument("--mask_matrix", type=str, required=True, help="Path to mask_matrix")
+    parser.add_argument("--exp_yaml", type=str, default="exp.yaml", help="Path to experiment YAML config file")
 
     args = parser.parse_args()
 
     # Inputs
-    #print(f"\n{SCRIPT_LABEL}: {args.exp_yaml}")
-    # exp_yaml = load_yaml(args.exp_yaml)
+    print(f"\n{SCRIPT_LABEL}: {args.exp_yaml}")
+    exp_yaml = load_yaml(args.exp_yaml)
 
     # Experiment paths
-    # path_to_gt_file_db = exp_yaml["path_to_gt_file_db"]
-    # path_to_gt_file_query = exp_yaml["path_to_gt_file_query"]
-
-    # path_to_rgb_list_db = exp_yaml["path_to_rgb_list_db"]
-    # path_to_rgb_list_query = exp_yaml["path_to_rgb_list_query"]
-
-    # path_to_rgb_folder_db = exp_yaml["path_to_rgb_folder_db"]
-    # path_to_rgb_folder_query = exp_yaml["path_to_rgb_folder_query"]
-
-    # GT_path = exp_yaml["GT_path"]
-    # M_path = exp_yaml["M_path"]
-
-    # Experiment paths
-    path_to_gt_file_db = args.gt_file_db 
-    path_to_gt_file_q = args.gt_file_q 
-    path_to_rgb_list_db = args.rgb_list_db
-    path_to_rgb_list_q = args.rgb_list_q
-    path_to_rgb_folder_db = args.rgb_folder_db
-    path_to_rgb_folder_q = args.rgb_folder_q
-    print(f'path_to_gt_file_db : {path_to_gt_file_db}')
-    print(f'path_to_gt_file_q : {path_to_gt_file_q}')
-    print(f'path_to_rgb_list_db : {path_to_rgb_list_db}')
-    print(f'path_to_rgb_list_q : {path_to_rgb_list_q}')
-    print(f'path_to_rgb_folder_db : {path_to_rgb_folder_db}')
-    print(f'path_to_rgb_folder_q : {path_to_rgb_folder_q}')  
-
-    GT_path = args.gt_matrix
-    M_path = args.mask_matrix
-    print(f'GT_path : {GT_path}')
-    print(f'M_path : {M_path}')
-     
+    path_to_gt_file_db = exp_yaml['gt_file_db']
+    path_to_gt_file_q = exp_yaml['gt_file_q']
+    path_to_rgb_list_db = exp_yaml['rgb_list_db']
+    path_to_rgb_list_q = exp_yaml['rgb_list_q']
+    path_to_rgb_folder_db = exp_yaml['rgb_folder_db']
+    path_to_rgb_folder_q = exp_yaml['rgb_folder_q']
+    GT_path = exp_yaml['gt_matrix']
+    M_path = exp_yaml['mask_matrix']
+   
     # # Load image lists
     #db_df, query_df = load_image_list_with_absolute_paths(path_to_rgb_list_db, path_to_rgb_list_query, path_to_rgb_folder_db, path_to_rgb_folder_query)
     #gt_db = load_trajectory(path_to_gt_file_db)
