@@ -72,5 +72,5 @@ num_th = 100
 
 precisions, recalls, thresholds, stats_at_rand = precision_recall_curve(GT = GT, M = M, r_gt = r_gt, D = D, matching=matching, num_th=num_th)
 
-# plot_clickable_matrix(matrix = D, db_df = db_df, query_df = query_df, gt_db = gt_db, gt_query = gt_query)
-plot_clickable_matrix(matrix = D, db_df = db_df, query_df = query_df, lightglue_matching_func=True)
+plot_clickable_matrix(matrix = D, db_df = db_df, query_df = query_df, gt_db = gt_db, gt_query = gt_query)
+# plot_clickable_matrix(matrix = D, db_df = db_df, query_df = query_df, lightglue_matching_func=True)
