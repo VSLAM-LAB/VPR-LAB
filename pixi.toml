@@ -17,8 +17,8 @@ vpr-lab.cmd = "python vpr-lab.py --method={{ method }} --database_folder={{ data
 vpr-lab.cwd = "VPR-methods-evaluation"
 vpr-lab.args = [
   { "arg" = "method", "default" = "megaloc" },
-  { "arg" = "database_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb" },
-  { "arg" = "queries_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb" },
+  { "arg" = "database_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb_0" },
+  { "arg" = "queries_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb_0" },
   { "arg" = "log_dir", "default" = "/home/alejandro/vpr-test/ASPA135/results" },
 ]
 

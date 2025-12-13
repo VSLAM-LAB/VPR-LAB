@@ -9,32 +9,25 @@ import pandas as pd
 import cv2
 
 def make_absolute_paths(db_df, query_df, path_to_rgb_folder_db, path_to_rgb_folder_query):
-    db_df[1] = db_df[1].apply(lambda x: os.path.join(path_to_rgb_folder_db, x))
-    query_df[1] = query_df[1].apply(lambda x: os.path.join(path_to_rgb_folder_query, x))
-
+    db_df['path_rgb0'] = db_df['path_rgb0'].apply(lambda x: os.path.join(path_to_rgb_folder_db, x))
+    query_df['path_rgb0'] = query_df['path_rgb0'].apply(lambda x: os.path.join(path_to_rgb_folder_query, x))
     return db_df, query_df
 
 def load_image_list(path_to_rgb_list_db, path_to_rgb_list_query):
-    db_df = pd.read_csv(path_to_rgb_list_db, sep=' ', header=None)
-    query_df = pd.read_csv(path_to_rgb_list_query, sep=' ', header=None)
-    
+    db_df = pd.read_csv(path_to_rgb_list_db)
+    query_df = pd.read_csv(path_to_rgb_list_query)
     return db_df, query_df
 
 def load_image_list_with_absolute_paths(path_to_rgb_list_db, path_to_rgb_list_query, path_to_rgb_folder_db, path_to_rgb_folder_query):
-
     db_df, query_df = load_image_list(path_to_rgb_list_db, path_to_rgb_list_query)
     db_df, query_df = make_absolute_paths(db_df, query_df, path_to_rgb_folder_db, path_to_rgb_folder_query)
-
     return db_df, query_df
 
 def load_trajectory(path_to_gt_file):
-    col_names = ["ts", "tx", "ty", "tz", "qx", "qy", "qz", "qw"]
-    gt = pd.read_csv(path_to_gt_file, sep=r"\s+", header=None, names=col_names)
+    gt = pd.read_csv(path_to_gt_file)
     gt_df = gt[["tx","ty","tz"]].to_numpy(dtype=float) 
     
     return gt_df
-
-
 
 def load_yaml(path: str = "exp.yaml") -> dict:
     p = Path(path)

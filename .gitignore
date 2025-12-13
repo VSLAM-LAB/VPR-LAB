@@ -2,3 +2,7 @@
 # pixi environments
 .pixi
 *.egg-info
+
+VPR-methods-evaluation
+LightGlue
+__pycache__
