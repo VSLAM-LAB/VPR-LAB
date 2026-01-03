@@ -13,13 +13,11 @@ git-clone-vpr-methods-evaluation.cmd = 'git clone --recursive https://github.com
 git-clone-lightglue.cmd = 'git clone --recursive https://github.com/cvg/LightGlue.git'
 install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depends-on = ['git-clone-lightglue']}
  
-vpr-lab.cmd = "python vpr-lab.py --method={{ method }} --database_folder={{ database_folder }} --queries_folder={{ queries_folder }} --log_dir={{ log_dir }} --no_labels"
+vpr-lab.cmd = "python vpr-lab.py --method={{ method }} --exp_yaml={{ exp_yaml }} --no_labels"
 vpr-lab.cwd = "VPR-methods-evaluation"
 vpr-lab.args = [
   { "arg" = "method", "default" = "megaloc" },
-  { "arg" = "database_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb_0" },
-  { "arg" = "queries_folder", "default" = "/home/alejandro/vpr-test/ASPA135/rgb_0" },
-  { "arg" = "log_dir", "default" = "/home/alejandro/vpr-test/ASPA135/results" },
+  { "arg" = "exp_yaml", "default" = "/home/alejandro/VPR-LAB/exp_test.yaml" },
 ]
 
 create-gt-matrix.cmd = "python create-gt-matrix.py --exp_yaml={{ exp_yaml }}"

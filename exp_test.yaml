@@ -1,12 +1,18 @@
-gt_file_db: "/home/alejandro/vpr-test/ASPA135/groundtruth.csv"
-gt_file_q: "/home/alejandro/vpr-test/ASPA135/groundtruth.csv"
+%YAML 1.2
+---
 
-rgb_folder_db: "/home/alejandro/vpr-test/ASPA135"
-rgb_folder_q: "/home/alejandro/vpr-test/ASPA135"
+rgb_folder_db: "/home/alejandro/VSLAM-LAB-NEXT-ITERATION/VSLAM-LAB-Benchmark/SESOKO/ssk16/rgb_0"
+rgb_folder_q: "/home/alejandro/VSLAM-LAB-NEXT-ITERATION/VSLAM-LAB-Benchmark/SESOKO/ssk17-s01/rgb_0"
 
-rgb_list_db: "/home/alejandro/vpr-test/ASPA135/rgb.csv"
-rgb_list_q: "/home/alejandro/vpr-test/ASPA135/rgb.csv"
+rgb_list_db: "/home/alejandro/VSLAM-LAB-NEXT-ITERATION/VSLAM-LAB-Benchmark/SESOKO/ssk16/rgb.csv"
+rgb_list_q: "/home/alejandro/VSLAM-LAB-NEXT-ITERATION/VSLAM-LAB-Benchmark/SESOKO/ssk17-s01/rgb.csv"
 
-d_matrix: "/home/alejandro/vpr-test/ASPA135/results/D_0_megaloc.npy"
-gt_matrix: "/home/alejandro/vpr-test/ASPA135/results/GT.npy"
-mask_matrix: "/home/alejandro/vpr-test/ASPA135/results/M.npy"
+gt_file_db: "/home/alejandro/VSLAM-LAB-NEXT-ITERATION/VSLAM-LAB-Benchmark/SESOKO/ssk16/groundtruth.csv"
+gt_file_q: "/home/alejandro/VSLAM-LAB-NEXT-ITERATION/VSLAM-LAB-Benchmark/SESOKO/ssk17-s01/groundtruth.csv"
+
+log_dir: "/home/alejandro/vpr-test/sesoko/16-17s01-megaloc"
+
+
+# d_matrix: "/home/alejandro/vpr-test/sesoko/1601-1801/D_0_megaloc.npy"
+# gt_matrix: ""
+# mask_matrix: ""

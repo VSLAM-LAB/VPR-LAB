@@ -331,6 +331,8 @@ def plot_clickable_matrix(
             print("lightglue_matching")
             q_img_path = query_df.iloc[col][q_path_col] if 0 <= col < len(query_df) else None
             db_img_path = db_df.iloc[row][db_path_col] if 0 <= row < len(db_df) else None
+            print(f"Query image path: {q_img_path}")
+            print(f"Database image path: {db_img_path}")
             kpts0, kpts1 = lightglue_matching(q_img_path, db_img_path, plot=True)
 
             if windows["warp_fig"] is not None:

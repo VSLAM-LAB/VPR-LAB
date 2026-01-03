@@ -9,8 +9,8 @@ import pandas as pd
 import cv2
 
 def make_absolute_paths(db_df, query_df, path_to_rgb_folder_db, path_to_rgb_folder_query):
-    db_df['path_rgb0'] = db_df['path_rgb0'].apply(lambda x: os.path.join(path_to_rgb_folder_db, x))
-    query_df['path_rgb0'] = query_df['path_rgb0'].apply(lambda x: os.path.join(path_to_rgb_folder_query, x))
+    db_df['path_rgb_0'] = db_df['path_rgb_0'].apply(lambda x: os.path.join(path_to_rgb_folder_db, x))
+    query_df['path_rgb_0'] = query_df['path_rgb_0'].apply(lambda x: os.path.join(path_to_rgb_folder_query, x))
     return db_df, query_df
 
 def load_image_list(path_to_rgb_list_db, path_to_rgb_list_query):
@@ -25,7 +25,7 @@ def load_image_list_with_absolute_paths(path_to_rgb_list_db, path_to_rgb_list_qu
 
 def load_trajectory(path_to_gt_file):
     gt = pd.read_csv(path_to_gt_file)
-    gt_df = gt[["tx","ty","tz"]].to_numpy(dtype=float) 
+    gt_df = gt[["tx (m)","ty (m)","tz (m)"]].to_numpy(dtype=float) 
     
     return gt_df
 
@@ -91,6 +91,7 @@ def lightglue_matching(path_to_image0, path_to_image1, plot=False, features='sup
         feats0_k, feats1_k, out_k = [rbd(x) for x in [feats0, feats1_k, out_k]]   # remove batch dim
         matches_k = out_k['matches']   # (K,2) long
         num_k = len(matches_k)
+        print(f"Rotation {k*90}°: {num_k} matches found.")
         if num_k > max_num_matches:
             max_num_matches = num_k
             matches = matches_k
