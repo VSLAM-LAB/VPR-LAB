@@ -9,104 +9,100 @@ version = "0.1.0"
 cuda = "12.0"
 
 [tasks]
-git-clone-vpr-methods-evaluation.cmd = 'git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git'
-git-clone-lightglue.cmd = 'git clone --recursive https://github.com/cvg/LightGlue.git'
-install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depends-on = ['git-clone-lightglue']}
- 
-vpr-lab.cmd = "python vpr-lab.py --method={{ method }} --exp_yaml={{ exp_yaml }} --no_labels"
-vpr-lab.cwd = "VPR-methods-evaluation"
-vpr-lab.args = [
+# Setup tasks
+clone-vpr-methods = { cmd = "git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git" }
+clone-lightglue = { cmd = "git clone --recursive https://github.com/cvg/LightGlue.git" }
+install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depends-on = ['clone-lightglue']}
+setup = { depends-on = ["clone-vpr-methods", "install-lightglue"] }
+
+# VPR methods evaluation
+vpr-methods.cmd = "python vpr-lab.py --method={{ method }} --exp_yaml={{ exp_yaml }} --rot_360"
+vpr-methods.cwd = "VPR-methods-evaluation"
+vpr-methods.args = [
   { "arg" = "method", "default" = "megaloc" },
-  { "arg" = "exp_yaml", "default" = "/home/alejandro/VPR-LAB/exp_test.yaml" },
+  { "arg" = "exp_yaml", "default" = "../exp_test.yaml" },
 ]
 
 create-gt-matrix.cmd = "python create-gt-matrix.py --exp_yaml={{ exp_yaml }}"
 create-gt-matrix.args = [
-  { "arg" = "exp_yaml", "default" = "exp_test.yaml" } 
+  { "arg" = "exp_yaml", "default" = "exp_test.yaml" }
 ]
 
 create-mask-matrix.cmd = "python create-mask-matrix.py --exp_yaml={{ exp_yaml }}"
 create-mask-matrix.args = [
-  { "arg" = "exp_yaml", "default" = "exp_test.yaml" } 
+  { "arg" = "exp_yaml", "default" = "exp_test.yaml" }
 ]
 
 demo.cmd = "python demo.py --exp_yaml={{ exp_yaml }}"
 demo.args = [
-  { "arg" = "exp_yaml", "default" = "exp_test.yaml" } 
+  { "arg" = "exp_yaml", "default" = "exp_test.yaml" }
 ]
 
 [dependencies]
-pyqt = "*"
+python = "3.11.*"
+pip = ">=26.0.1,<27"
+setuptools = ">=82.0.1,<83"
 
-pytorch-gpu = "*"
-torchvision = "*"
-tqdm = "*"
-numpy = "*"
-pandas = "*"
-matplotlib = "*"
-kornia = "*"
-pyyaml = "*"
-seaborn = "*"
-opencv = "*"
-haversine = "*"
-pdf2image = "*"
-pillow = "*"
-pypdf2 = "*"
-pymupdf = "*"
-# poppler-utils = "*"
-
-# pyyaml = "*"
-# tqdm = "*"
-# numpy = "*"
-# pandas = "*"
-# matplotlib = "*"
-# haversine = "*"
-scikit-image = "*"
-scikit-learn = "=1.6.1"
-scipy = "=1.15.1"
-faiss-cpu = "=1.8.0"
-# pytorch-gpu = "*"
-# torchvision = ">=0.3"
-loguru = "*"
-gdown = "*"
-einops = "*"
-pyproj = ">=3.7.1,<4"
-psutil = "*"
-# seaborn = ">=0.13.2,<0.14"
+# Deep Learning
+pytorch-gpu = ">=2.7.1,<3"
+torchvision = ">=0.22.0,<0.23"
 timm = ">=1.0.15,<2"
+einops = ">=0.8.2,<0.9"
+kornia = ">=0.8.2,<0.9"
 
-#[pypi-dependencies]
-#opencv-python = "*"
+# Data & Scientific Computing
+numpy = ">=1.26.4,<2"
+pandas = ">=3.0.1,<4"
+scipy = "==1.15.1"
+scikit-learn = "==1.6.1"
+scikit-image = ">=0.26.0,<0.27"
+faiss-cpu = "==1.8.0"
+
+# Image & Vision
+opencv = ">=4.12.0,<5"
+pillow = ">=12.0.0,<13"
+
+# Visualisation
+matplotlib = ">=3.10.8,<4"
+seaborn = ">=0.13.2,<0.14"
+panel = ">=1.8.10,<2"
+
+# PDF & Document
+pdf2image = ">=1.17.0,<2"
+pypdf2 = ">=3.0.1,<4"
+pymupdf = ">=1.26.1,<2"
+
+# Geo & Utilities
+haversine = ">=2.9.0,<3"
+pyproj = ">=3.7.1,<4"
+psutil = ">=7.2.2,<8"
+pyyaml = ">=6.0.3,<7"
+tqdm = ">=4.67.3,<5"
+loguru = ">=0.7.3,<0.8"
+gdown = ">=5.2.1,<6"
+pyqt = ">=5.15.11,<6"
 
 # CUDA Build Tools
-cuda-compiler = "*"
+cuda-compiler = ">=12.6.3,<13"
 cuda-version = "12.6.*"
-cuda-cudart-dev = "*"
-cuda-crt = "*"
-libcusparse-dev = "*"
-cuda-driver-dev = "*"
-cuda-nvcc = "*"
-cuda-nvrtc-dev = "*"
-cuda-nvtx = "*"
-cuda-nvtx-dev = "*"
-cuda-nvml-dev = "*"
-cuda-profiler-api = "*"
+cuda-cudart-dev = ">=12.6.77,<13"
+cuda-crt = ">=12.6.85,<13"
+cuda-driver-dev = ">=12.6.77,<13"
+cuda-nvcc = ">=12.6.85,<13"
+cuda-nvrtc-dev = ">=12.6.85,<13"
+cuda-nvtx = ">=12.6.77,<13"
+cuda-nvtx-dev = ">=12.6.77,<13"
+cuda-nvml-dev = ">=12.6.77,<13"
+cuda-profiler-api = ">=12.6.77,<13"
+libcusparse-dev = ">=12.5.4.2,<13"
 
 # CUDA Libraries
-cudnn = "*"
-libcublas-dev = "*"
-libcudss-dev = "*"
-libcufile-dev = "*"
-libcufft-dev = "*"
-libcurand-dev = "*"
-libcusolver-dev = "*"
-cusparselt = "*"
-libnvjitlink = "*"
-
-python="3.11.*"
-setuptools = "*"
-pip = "*"
-
-# LaTeX
-# texlive-core = "*"
-
+cudnn = ">=9.10.2.21,<10"
+libcublas-dev = ">=12.6.4.1,<13"
+libcufft-dev = ">=11.3.0.4,<12"
+libcurand-dev = ">=10.3.7.77,<11"
+libcusolver-dev = ">=11.7.1.2,<12"
+libcudss-dev = ">=0.6.0.5,<0.7"
+libcufile-dev = ">=1.11.1.6,<2"
+libnvjitlink = ">=12.9.86,<13"
+cusparselt = ">=0.8.1.1,<0.9"

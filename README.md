@@ -1,4 +1,7 @@
 # VPR-LAB
+```bash
+pixi run setup
+```
 
 Create distance matrix:
 ```bash

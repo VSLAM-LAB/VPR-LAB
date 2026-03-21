@@ -1,5 +1,5 @@
 
-import matplotlib 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -18,7 +18,7 @@ plot_settings_default = {
     'grid_on': True,
     'grid_alpha': 0.4,
     'grid_style': '--',
-    'line_width': 2.0 * factor,   
+    'line_width': 2.0 * factor,
     'marker_size': 4 * factor,
     'settings': {
         'font.size': 18 * factor,
@@ -66,14 +66,14 @@ def plot_trajectory(traj, fig, ax, label, color = 'b',  mode="3d"):
         ax.set_ylabel("Y [m]")
         # if not '2D' in title:
         #     ax.set_title(ax.get_title() + " (2D view)")
-    
+
     ax.legend()
     return fig, ax
 
 def plot_warped_image(kpts0, kpts1, path_to_image0, path_to_image1, fig, ax):
     if len(kpts0) < 4 or len(kpts1) < 4:
-        return fig, ax  
-    
+        return fig, ax
+
     import cv2
 
     # --- Convert to NumPy for OpenCV ---
@@ -95,7 +95,7 @@ def plot_warped_image(kpts0, kpts1, path_to_image0, path_to_image1, fig, ax):
     # --- Load images via OpenCV for warping (H,W,C in BGR) ---
     cv_img0 = cv2.imread(path_to_image0, cv2.IMREAD_COLOR)
     cv_img1 = cv2.imread(path_to_image1, cv2.IMREAD_COLOR)
-    h, w = cv_img1.shape[:2] 
+    h, w = cv_img1.shape[:2]
 
     # --- Warp and display ---
     warped = cv2.warpPerspective(cv_img0, H, (w, h))
@@ -121,9 +121,9 @@ def plot_warped_image(kpts0, kpts1, path_to_image0, path_to_image1, fig, ax):
     composite = warped.copy()
     composite[mask_bg] = tinted_img[mask_bg]
 
-    cv2.drawContours(composite, bg_contours, -1, blue_bgr, thickness=4)   
-    cv2.drawContours(composite, fg_contours, -1, orange_bgr, thickness=3) 
-                
+    cv2.drawContours(composite, bg_contours, -1, blue_bgr, thickness=4)
+    cv2.drawContours(composite, fg_contours, -1, orange_bgr, thickness=3)
+
     # plot actual keypoints from the database image and projected keypoints from the query image
     #plt.figure(figsize=(14, 14))
     ax.imshow(cv2.cvtColor(composite, cv2.COLOR_BGR2RGB))
@@ -138,7 +138,7 @@ def plot_warped_image(kpts0, kpts1, path_to_image0, path_to_image1, fig, ax):
 
 def plot_clickable_matrix(
     matrix, db_df, query_df, gt_db=None, gt_query=None, q_path_col=1, db_path_col=1,
-    radius_px=5, pick='min', plot_settings = plot_settings_default, lightglue_matching_func=True
+    radius_px=50, pick='min', plot_settings = plot_settings_default, lightglue_matching_func=True
 ):
     import numpy as np
     import os
@@ -160,7 +160,7 @@ def plot_clickable_matrix(
     if labels:
         labels[1] = ""   # blank out the first one
     ax_main.set_xticklabels(labels)
-    
+
     # Click marker + annotation
     marker = ax_main.scatter([], [], s=80, facecolors="none", edgecolors="white", linewidths=1.8)
     ann = ax_main.annotate(
@@ -291,7 +291,7 @@ def plot_clickable_matrix(
             fig_traj, ax_traj = plt.subplots()
             _move_figure(fig_traj, 2300, 200)
             windows["traj_fig"] = fig_traj
-            
+
             fig_traj, ax_traj = plot_trajectory(gt_db, fig_traj, ax_traj, label='gt_db', color='r', mode='2d')
             fig_traj, ax_traj = plot_trajectory(gt_query, fig_traj, ax_traj, label='gt_query', color='k', mode='2d')
 
@@ -329,8 +329,10 @@ def plot_clickable_matrix(
         if lightglue_matching_func:
             from utilities import lightglue_matching
             print("lightglue_matching")
-            q_img_path = query_df.iloc[col][q_path_col] if 0 <= col < len(query_df) else None
-            db_img_path = db_df.iloc[row][db_path_col] if 0 <= row < len(db_df) else None
+
+            q_img_path = query_df['path_rgb_0'].iloc[col] if 0 <= col < len(query_df) else None
+            db_img_path = db_df['path_rgb_0'].iloc[row] if 0 <= row < len(db_df) else None
+            
             print(f"Query image path: {q_img_path}")
             print(f"Database image path: {db_img_path}")
             kpts0, kpts1 = lightglue_matching(q_img_path, db_img_path, plot=True)
@@ -353,6 +355,6 @@ def plot_clickable_matrix(
         plt.pause(0.001)
 
     fig_main.canvas.mpl_connect("button_press_event", onclick)
-    
+
     plt.show()
     return fig_main, ax_main
