@@ -2,11 +2,10 @@
 authors = ["alejandrofontan <fontanvillacampa@gmail.com>"]
 channels = ["conda-forge"]
 name = "VPR-LAB"
-platforms = ["linux-64"]
 version = "0.1.0"
-
-[system-requirements]
-cuda = "12.0"
+platforms = [
+    { name = "linux-64-cuda126", platform = "linux-64", cuda = "12.6" },
+]
 
 [tasks]
 # Setup tasks
@@ -16,11 +15,14 @@ install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depe
 setup = { depends-on = ["clone-vpr-methods", "install-lightglue"] }
 
 # VPR methods evaluation
-vpr-methods.cmd = "python vpr-lab.py --method={{ method }} --exp_yaml={{ exp_yaml }} --rot_360"
+vpr-methods.cmd = "python vpr-lab.py --method={{ method }} --exp_yaml={{ exp_yaml }} --rot_360 --rgb_csv_db={{ rgb_csv_db }} --rgb_csv_q={{ rgb_csv_q }} --log_dir={{ log_dir }}"
 vpr-methods.cwd = "VPR-methods-evaluation"
 vpr-methods.args = [
   { "arg" = "method", "default" = "megaloc" },
   { "arg" = "exp_yaml", "default" = "../exp_test.yaml" },
+  { "arg" = "rgb_csv_db", "default" = "None"},
+  { "arg" = "rgb_csv_q", "default" = "None" },
+  { "arg" = "log_dir", "default" = "None" },
 ]
 
 create-gt-matrix.cmd = "python create-gt-matrix.py --exp_yaml={{ exp_yaml }}"
