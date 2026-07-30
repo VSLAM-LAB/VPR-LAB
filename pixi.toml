@@ -9,9 +9,11 @@ platforms = [
 
 [tasks]
 # Setup tasks
-clone-vpr-methods = { cmd = "git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git" }
-clone-lightglue = { cmd = "git clone --recursive https://github.com/cvg/LightGlue.git" }
-install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depends-on = ['clone-lightglue']}
+clone-vpr-methods.cmd = "[ -d VPR-methods-evaluation ] || git clone --recursive https://github.com/alejandrofontan/VPR-methods-evaluation.git"
+clone-vpr-methods.outputs = ["VPR-methods-evaluation"]
+clone-lightglue.cmd = "[ -d LightGlue ] || git clone --recursive https://github.com/cvg/LightGlue.git"
+clone-lightglue.outputs = ["LightGlue"]
+install-lightglue = {cmd = 'python -m pip install -e .', cwd = 'LightGlue', depends-on = ['clone-lightglue'], outputs = ['LightGlue/lightglue.egg-info']}
 setup = { depends-on = ["clone-vpr-methods", "install-lightglue"] }
 
 # VPR methods evaluation
